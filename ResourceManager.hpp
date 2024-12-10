@@ -17,16 +17,34 @@ public:
         obiekt_ = new Resource{*rm.obiekt_};
     }
 
-    ResourceManager& operator=(const ResourceManager& rm)
+    ResourceManager(ResourceManager&& rm) : obiekt_{ rm.obiekt_ }
+    { rm.obiekt_ = nullptr;
+    }
+
+    ResourceManager& operator=(ResourceManager&& rm)
     {
-        if (this == &rm) {
+        if (this == &rm) 
+        {
             return *this;
         }
         else 
         {
         delete obiekt_;
-        obiekt_ = new Resource{*rm.obiekt_};
+        obiekt_ = rm.obiekt_;
+        rm.obiekt_ = nullptr;
         return *this;
+        }
+    }
+
+        ResourceManager& operator=(const ResourceManager& rm)
+    {
+        if (this == &rm) {
+            return *this;
+        }
+        else {
+            delete obiekt_;
+            obiekt_ = new Resource{*rm.obiekt_};
+            return *this;
         }
     }
 
